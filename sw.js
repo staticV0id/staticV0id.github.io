@@ -1,4 +1,4 @@
-const CACHE_NAME = 'today-with-love-v1';
+const CACHE_NAME = 'today-with-love-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -7,7 +7,7 @@ const ASSETS = [
   './icon-512.png',
   './icon-maskable-192.png',
   './icon-maskable-512.png',
-  './icons/apple-touch-icon.png'
+  './apple-touch-icon.png'
 ];
 
 self.addEventListener('install', (event) => {
