@@ -139,12 +139,13 @@ html {
   /* over a busy photo, low-opacity hearts disappear entirely — add a soft
      glow (both light and dark) so they stay visible against any image, and
      raise their opacity so they don't get lost in the picture */
-  html.has-bg-photo .ambient span{
+  html.has-text-bg .ambient span{
     filter:
       drop-shadow(0 0 4px rgba(255,255,255,0.65))
       drop-shadow(0 1px 3px rgba(0,0,0,0.45));
     animation-name: riseVisible;
   }
+
   @keyframes riseVisible{
     0%{ transform:translateY(0) scale(0.8); opacity:0; }
     10%{ opacity:.8; }
@@ -342,7 +343,7 @@ html {
 
   /* subtle opaque panels behind text, only when a background photo is set —
      keeps the date/counters readable regardless of what's in the photo */
-  html.has-bg-photo .content{
+  html.has-text-bg .content{
     background:var(--stage-panel-bg);
     border:1px solid var(--stage-panel-border);
     border-radius:28px;
@@ -351,7 +352,8 @@ html {
     -webkit-backdrop-filter:blur(10px);
     box-shadow:0 6px 24px rgba(0,0,0,0.12);
   }
-  html.has-bg-photo .together{
+  
+  html.has-text-bg .together{
     background:var(--stage-panel-bg);
     border:1px solid var(--stage-panel-border);
     border-radius:999px;
@@ -359,7 +361,7 @@ html {
     backdrop-filter:blur(10px);
     -webkit-backdrop-filter:blur(10px);
   }
-  html.has-bg-photo .footnote{
+  html.has-text-bg .footnote{
     display:inline-block;
     background:var(--stage-panel-bg);
     border:1px solid var(--stage-panel-border);
@@ -368,8 +370,8 @@ html {
     backdrop-filter:blur(10px);
     -webkit-backdrop-filter:blur(10px);
   }
-  html.has-bg-photo .counter,
-  html.has-bg-photo .counter-time{
+  html.has-text-bg .counter,
+  html.has-text-bg .counter-time{
     background:var(--stage-panel-bg);
     border:1px solid var(--stage-panel-border);
     border-radius:20px;
@@ -912,12 +914,24 @@ html {
     </div>
 
       <label class="switch-row" for="textToggle">
-        <span class="switch-row-label" id="textToggleLabel">Dark text</span>
+        <span class="switch-row-label" id="textToggleLabel">Light Theme</span>
         <span class="switch">
           <input type="checkbox" id="textToggle">
           <span class="switch-track"><span class="switch-thumb"></span></span>
         </span>
       </label>
+
+      <!-- add toggle for text backgroud -->
+
+        <label class="switch-row" for="textBgToggle">
+        <span class="switch-row-label" id="textBgToggleLabel">Text Background</span>
+        <span class="switch">
+          <input type="checkbox" id="textBgToggle">
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </span>
+      </label>
+
+
     </div>
 
     <div class="sidebar-section">
@@ -1308,16 +1322,20 @@ const NOTES = [
     const chooseBtn = document.getElementById('chooseBgBtn');
     const removeBtn = document.getElementById('removeBgBtn');
     const fileInput = document.getElementById('bgFileInput');
+    const textBgToggle = document.getElementById('textBgToggle');
 
     function applyBackground(dataUrl){
       if (dataUrl) {
         document.documentElement.style.setProperty('--bg-image', `url("${dataUrl}")`);
-        document.documentElement.classList.add('has-bg-photo');
+        document.documentElement.classList.add('has-text-bg');
         removeBtn.hidden = false;
+        textBgToggle.checked = true;
       } else {
         document.documentElement.style.removeProperty('--bg-image');
-        document.documentElement.classList.remove('has-bg-photo');
+        document.documentElement.classList.remove('has-text-bg');
         removeBtn.hidden = true;
+        textBgToggle.checked = false;
+
       }
     }
 
@@ -1381,6 +1399,33 @@ const NOTES = [
     }
   })();
 
+  // turn off text background
+  (function textBackgroundToggle(){
+    const KEY = 'loveDate:textBg'; // 'off' (default) | 'on'
+    const toggle = document.getElementById('textBgToggle');
+
+    function apply(mode){
+      if (mode === 'on') {
+        toggle.checked = true;
+        document.documentElement.classList.add('has-text-bg');
+
+      } else {
+        document.documentElement.classList.remove('has-text-bg');
+
+        toggle.checked = false;
+      }
+    }
+    toggle.addEventListener('change', () => {
+      const mode = toggle.checked ? 'on' : 'off';
+      try { localStorage.setItem(KEY, mode); } catch (err) {}
+      apply(mode);
+    });
+
+    let saved = 'on';
+    try { saved = localStorage.getItem(KEY) || 'on'; } catch (err) {}
+    apply(saved);
+  })();
+
   // ---- Light / dark text switch ----
   // Independent of the background photo itself — lets the person manually
   // pick whichever text color stays legible over whatever they've set.
@@ -1392,11 +1437,11 @@ const NOTES = [
     function apply(mode){
       if (mode === 'light') {
         document.documentElement.setAttribute('data-text', 'light');
-        label.textContent = 'Light text';
+        label.textContent = 'Dark Theme';
         toggle.checked = true;
       } else {
         document.documentElement.removeAttribute('data-text');
-        label.textContent = 'Dark text';
+        label.textContent = 'Light Theme';
         toggle.checked = false;
       }
     }
