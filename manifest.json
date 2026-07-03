@@ -2,7 +2,7 @@
   "name": "I ♥ mimi",
   "short_name": "I ♥ U",
   "description": "A little love letter to mimi, counting the days since we met.",
-  "start_url": "./index.html",
+  "start_url": "/",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
