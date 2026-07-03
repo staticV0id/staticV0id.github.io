@@ -1,7 +1,7 @@
 {
   "name": "I ♥ mimi",
   "short_name": "I ♥ U",
-  "description": "A little love letter to mimi, counting the days since we met.",
+  "description": "A little love letter to mimi, counting the days since we are together.",
   "start_url": "/",
   "scope": "./",
   "display": "standalone",
