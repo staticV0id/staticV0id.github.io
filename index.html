@@ -10,15 +10,20 @@
 <link rel="manifest" href="manifest.json" />
 <meta name="theme-color" content="#F1E9DC" />
 
+
+<meta name="viewport" content="initial-scale=1, viewport-fit=cover, width=device-width"></meta>
+<meta name="apple-mobile-web-app-capable" content="yes"></meta>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"></meta>
+
 <!-- iOS PWA support -->
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Today" />
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
 <!-- Android / general icons -->
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
-<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,6 +43,17 @@
   }
 
   *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+
+
+html {
+  min-height: calc(100% + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
   html,body{
     height:100%;
@@ -354,6 +370,10 @@
   }
 </style>
 </head>
+
+
+
+
 <body>
 
   <div class="ambient" id="ambient"></div>
