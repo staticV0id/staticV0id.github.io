@@ -640,13 +640,6 @@ html {
         </svg>
         Choose a photo
       </button>
-      <button class="sidebar-btn" id="takeBgBtn" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 8a2 2 0 0 1 2-2h1.2l.8-1.6A1 1 0 0 1 8.9 4h6.2a1 1 0 0 1 .9.6L16.8 6H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/>
-          <circle cx="12" cy="13" r="3.2"/>
-        </svg>
-        Take a new photo
-      </button>
       <button class="sidebar-btn subtle" id="removeBgBtn" type="button" hidden>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
         Remove photo
@@ -1043,7 +1036,6 @@ const NOTES = [
     const JPEG_QUALITY = 0.72;
 
     const chooseBtn = document.getElementById('chooseBgBtn');
-    const takeBtn = document.getElementById('takeBgBtn');
     const removeBtn = document.getElementById('removeBgBtn');
     const fileInput = document.getElementById('bgFileInput');
     const cameraInput = document.getElementById('bgCameraInput');
@@ -1096,7 +1088,6 @@ const NOTES = [
     }
 
     chooseBtn.addEventListener('click', () => fileInput.click());
-    takeBtn.addEventListener('click', () => cameraInput.click());
 
     [fileInput, cameraInput].forEach((input) => {
       input.addEventListener('change', () => {
