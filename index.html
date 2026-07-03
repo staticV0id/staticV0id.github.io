@@ -998,11 +998,14 @@ const NOTES = [
 
   // "Together since" — anniversary counter
   const TOGETHER_SINCE = new Date(2025, 11, 12); // December 12, 2025
+      const now = new Date();
+
 
       document.getElementById('weekday').textContent = WEEKDAYS[TOGETHER_SINCE.getDay()];
     document.getElementById('dayNumber').textContent = String(TOGETHER_SINCE.getDate()).padStart(2,'0');
     document.getElementById('monthYear').textContent = `${MONTHS[TOGETHER_SINCE.getMonth()]} ${TOGETHER_SINCE.getFullYear()}`;
-    document.getElementById('footnote').textContent = NOTES[TOGETHER_SINCE.getDate() % NOTES.length];
+
+    document.getElementById('footnote').textContent = NOTES[now.getDate() % NOTES.length];
 
 
 
