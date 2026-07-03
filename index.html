@@ -44,6 +44,8 @@
 
   *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
+
+
 html {
   min-height: calc(100% + env(safe-area-inset-top));
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
@@ -64,7 +66,12 @@ html {
     position:fixed;
     inset:0;
     background:
+      var(--bg-image, none),
+      linear-gradient(180deg, rgba(248,243,234,0.72), rgba(228,215,192,0.78)),
       radial-gradient(120% 90% at 50% -10%, var(--linen) 0%, var(--sand) 55%, var(--sand-deep) 100%);
+    background-size: cover, cover, cover;
+    background-position: center, center, center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
     color:var(--ink);
     font-family:'Cormorant Garamond', serif;
     display:flex;
@@ -528,7 +535,6 @@ html {
     font-size:12px;
     color:rgba(63,56,46,0.4);
   }
-
 </style>
 </head>
 
@@ -539,12 +545,10 @@ html {
 
   <div class="ambient" id="ambient"></div>
 
-
   <main class="stage">
-
     <div class="together">
 
-      <span>Ever Since </span>
+      <span>Together since </span>
             <svg viewBox="0 0 24 24" fill="#7C5C36"><path d="M12 21s-6.7-4.6-9.3-8.1C.7 10.1 1.2 6.6 4 4.9 6.2 3.6 9 4.2 12 7.1 15 4.2 17.8 3.6 20 4.9c2.8 1.7 3.3 5.2 1.3 7.9C18.7 16.4 12 21 12 21z"/></svg>
     </div>
 
@@ -602,6 +606,12 @@ html {
     </div>
 
 
+    <button class="install-btn" id="installBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/>
+        </svg>
+        <span id="installBtnLabel">Keep it on your home screen</span>
+      </button>
 
   </main>
 
@@ -656,16 +666,6 @@ html {
       </button>
     </div>
 
-    <div class="sidebar-section">
-      <h3>Home Screen</h3>
-      <button class="install-btn sidebar-btn" id="installBtn" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/>
-        </svg>
-        <span id="installBtnLabel">Keep it on your home screen</span>
-      </button>
-    </div>
-
     <div class="sidebar-footer">made with love</div>
   </aside>
 
@@ -685,6 +685,9 @@ html {
       <button type="button" id="installSheetClose">Got it</button>
     </div>
   </div>
+
+
+
 <script>
   const WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
