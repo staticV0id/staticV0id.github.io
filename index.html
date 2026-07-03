@@ -73,7 +73,8 @@ html {
     align-items:center;
     justify-content:center;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    overflow:hidden;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     user-select:none;
     -webkit-user-select:none;
   }
@@ -568,7 +569,7 @@ const NOTES = [
   // register service worker for offline use
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+      navigator.serviceWorker.register('swjs').catch(()=>{});
     });
   }
 
