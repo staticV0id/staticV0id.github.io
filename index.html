@@ -177,7 +177,7 @@ html {
     margin-bottom:8px;
   }
 
-  .pulse-ring{
+  .ring-pulse{
     position:absolute;
     inset:0;
     border-radius:50%;
@@ -185,7 +185,7 @@ html {
     opacity:0;
     animation: pulse 2.8s ease-out infinite;
   }
-  .pulse-ring.delay{ animation-delay:1.4s; }
+  .ring-pulse.delay{ animation-delay:1.4s; }
 
   @keyframes pulse{
     0%{ transform:scale(0.86); opacity:.45; }
@@ -382,7 +382,7 @@ html {
   }
 
   @media (prefers-reduced-motion: reduce){
-    .pulse-ring, .ambient span{ animation:none !important; opacity:0 !important; }
+    .ring-pulse, .ambient span{ animation:none !important; opacity:0 !important; }
   }
 
   /* install button */
@@ -780,9 +780,12 @@ html {
     </div>
 
     <div class="locket">
-            <div class="pulse-ring"></div>
-      <div class="pulse-ring delay"></div>
-      <div class="ring-static"></div>
+      
+      <div class="ring-pulse" id="ringPulse"></div>
+      <div class="ring-pulse delay" id="ringPulse2"></div>
+      <div class="ring-static" id="ringStatic"></div>
+
+
       <div class="content">
         <div class="weekday" id="weekday">Friday</div>
         <div class="day-number" id="dayNumber">12</div>
@@ -966,6 +969,9 @@ html {
   </div>
 
 <script>
+
+  document.getElementById('textBgToggle').checked = false;
+
   const WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
@@ -1325,6 +1331,7 @@ const NOTES = [
     const textBgToggle = document.getElementById('textBgToggle');
 
     function applyBackground(dataUrl){
+      console.log(dataUrl);
       if (dataUrl) {
         document.documentElement.style.setProperty('--bg-image', `url("${dataUrl}")`);
         document.documentElement.classList.add('has-text-bg');
@@ -1404,15 +1411,27 @@ const NOTES = [
     const KEY = 'loveDate:textBg'; // 'off' (default) | 'on'
     const toggle = document.getElementById('textBgToggle');
 
+
+    const ringStatic = document.getElementById('ringStatic');
+    const ringPulse = document.getElementById('ringPulse');
+    const ringPulse2 = document.getElementById('ringPulse2');
+
     function apply(mode){
       if (mode === 'on') {
         toggle.checked = true;
         document.documentElement.classList.add('has-text-bg');
 
+        ringStatic.hidden = true;
+        ringPulse.hidden = true;
+        ringPulse2.hidden = true;
       } else {
+        toggle.checked = false;
         document.documentElement.classList.remove('has-text-bg');
 
-        toggle.checked = false;
+        ringStatic.hidden = false;
+        ringPulse.hidden = false;
+        ringPulse2.hidden = false;
+
       }
     }
     toggle.addEventListener('change', () => {
