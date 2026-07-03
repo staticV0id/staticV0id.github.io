@@ -31,7 +31,6 @@ jobs:
           repository: ${{ github.repository_owner }}/love-app
           ref: main
           path: love-app
-          token: ${{ secrets.LOVE_APP_TOKEN }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
