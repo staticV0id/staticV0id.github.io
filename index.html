@@ -704,8 +704,8 @@ html {
 
     <div class="together together-names">
 
-      <span id="personMaleLabel">David</span> & 
-      <span id="personFemaleLabel">Amira</span>
+      <span id="nameYouLabel">You</span> & 
+      <span id="nameMeLabel">Me</span>
     </div>
     
 
@@ -1385,6 +1385,10 @@ const NOTES = [
 
     maleLabel.textContent = (data.male && data.male.name) || 'Him';
     femaleLabel.textContent = (data.female && data.female.name) || 'Her';
+
+    nameYouLabel.textContent = (data.male && data.male.name) || 'Him';  
+    nameMeLabel.textContent = (data.female && data.female.name) || 'Her';
+
     maleBtn.classList.toggle('filled', !!(data.male && data.male.name));
     femaleBtn.classList.toggle('filled', !!(data.female && data.female.name));
   }
