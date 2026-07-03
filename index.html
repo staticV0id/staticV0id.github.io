@@ -30,7 +30,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Playfair+Display:wght@500;600;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 
 
-
 <style>
   :root{
     --sand:        #F1E9DC;
@@ -624,6 +623,66 @@ html {
   .switch input:checked + .switch-track .switch-thumb{
     transform:translateX(18px);
   }
+
+  /* Person buttons */
+.person-row{
+  display:flex;
+  gap:10px;
+}
+.person-btn{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  padding:14px 10px;
+  border-radius:12px;
+  border:1px solid rgba(173,136,80,0.28);
+  background:rgba(173,136,80,0.06);
+  color:var(--ink);
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:15px;
+  cursor:pointer;
+  -webkit-appearance:none;
+  appearance:none;
+  transition:background 0.2s ease, transform 0.15s ease;
+}
+.person-btn:hover{ background:rgba(173,136,80,0.12); }
+.person-btn:active{ transform:scale(0.97); }
+.person-btn svg{ width:22px; height:22px; color:var(--gold-soft); }
+.person-btn.filled{ border-color:var(--gold-soft); background:rgba(173,136,80,0.14); }
+
+/* Popup form fields (reuses existing .sheet / .sheet-backdrop styles) */
+.person-field{
+  text-align:left;
+  margin-bottom:14px;
+}
+.person-field label{
+  display:block;
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:13px;
+  letter-spacing:0.04em;
+  color:var(--ink-soft);
+  margin-bottom:6px;
+}
+.person-field input{
+  width:100%;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid rgba(173,136,80,0.3);
+  background:var(--linen);
+  color:var(--ink);
+  font-family:'Cormorant Garamond', serif;
+  font-size:16px;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.person-field input:focus{
+  outline:none;
+  border-color:var(--gold);
+}
 </style>
 </head>
 
@@ -716,6 +775,44 @@ html {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18"/><path d="M6 6l12 12"/></svg>
       </button>
     </div>
+
+     <div class="sidebar-section">
+      <h3>Personalize</h3>
+      <p class="sidebar-hint">Set your names and birthdays to personalize your experience.</p>
+
+<div class="person-row">
+    <button class="person-btn" id="personMaleBtn" type="button" aria-label="Set his name and date of birth">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="10" cy="14" r="6"/><path d="M14.5 9.5 20 4"/><path d="M15 4h5v5"/>
+      </svg>
+      <span id="personMaleLabel">Him</span>
+    </button>
+    <button class="person-btn" id="personFemaleBtn" type="button" aria-label="Set her name and date of birth">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="9" r="6"/><path d="M12 15v6"/><path d="M9 18h6"/>
+      </svg>
+      <span id="personFemaleLabel">Her</span>
+    </button>
+  </div>
+</div>
+
+<!-- Popup: place as a sibling near the other sheet-backdrop, e.g. after #installSheetBackdrop -->
+<div class="sheet-backdrop" id="personSheetBackdrop">
+  <div class="sheet">
+    <h2 id="personSheetTitle">Her details</h2>
+    <div class="person-field">
+      <label for="personNameInput">Name</label>
+      <input type="text" id="personNameInput" placeholder="Name" autocomplete="off">
+    </div>
+    <div class="person-field">
+      <label for="personDobInput">Date of birth</label>
+      <input type="date" id="personDobInput">
+    </div>
+    <button type="button" id="personSheetSave">Save</button>
+  </div>
+</div>
+
+     </div>
 
     <div class="sidebar-section">
       <h3>Background</h3>
@@ -1237,7 +1334,79 @@ const NOTES = [
     apply(saved);
   })();
 
+// ---- Person details (name + date of birth) ----
+(function personDetails(){
+  const STORAGE_KEY = 'loveDate:people'; // { male: {name, dob}, female: {name, dob} }
 
+  const maleBtn = document.getElementById('personMaleBtn');
+  const femaleBtn = document.getElementById('personFemaleBtn');
+  const maleLabel = document.getElementById('personMaleLabel');
+  const femaleLabel = document.getElementById('personFemaleLabel');
+
+  const backdrop = document.getElementById('personSheetBackdrop');
+  const title = document.getElementById('personSheetTitle');
+  const nameInput = document.getElementById('personNameInput');
+  const dobInput = document.getElementById('personDobInput');
+  const saveBtn = document.getElementById('personSheetSave');
+
+  let activeKey = null; // 'male' | 'female'
+
+  function loadAll(){
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function saveAll(data){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (err) {}
+  }
+
+  function refreshLabels(){
+    const data = loadAll();
+    maleLabel.textContent = (data.male && data.male.name) || 'Him';
+    femaleLabel.textContent = (data.female && data.female.name) || 'Her';
+    maleBtn.classList.toggle('filled', !!(data.male && data.male.name));
+    femaleBtn.classList.toggle('filled', !!(data.female && data.female.name));
+  }
+
+  function openSheet(key, defaultTitle){
+    activeKey = key;
+    const data = loadAll();
+    const entry = data[key] || {};
+    title.textContent = defaultTitle;
+    nameInput.value = entry.name || '';
+    dobInput.value = entry.dob || '';
+    backdrop.classList.add('visible');
+  }
+
+  function closeSheet(){
+    backdrop.classList.remove('visible');
+    activeKey = null;
+  }
+
+  maleBtn.addEventListener('click', () => openSheet('male', "His details"));
+  femaleBtn.addEventListener('click', () => openSheet('female', "Her details"));
+
+  saveBtn.addEventListener('click', () => {
+    if (!activeKey) return;
+    const data = loadAll();
+    data[activeKey] = {
+      name: nameInput.value.trim(),
+      dob: dobInput.value
+    };
+    saveAll(data);
+    refreshLabels();
+    closeSheet();
+  });
+
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop) closeSheet();
+  });
+
+  refreshLabels();
+})();
 
 </script>
 </body>
