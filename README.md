@@ -1,1 +1,3 @@
-# staticV0id.github.io
+# Together Since
+
+Simple app counting the days since a determined (hardcoded)
