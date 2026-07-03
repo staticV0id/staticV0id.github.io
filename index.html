@@ -909,7 +909,6 @@ html {
         Remove photo
       </button>
       <input type="file" id="bgFileInput" accept="image/*" hidden>
-      <input type="file" id="bgCameraInput" accept="image/*" capture="environment" hidden>
     </div>
 
       <label class="switch-row" for="textToggle">
@@ -1307,10 +1306,8 @@ const NOTES = [
     const JPEG_QUALITY = 0.72;
 
     const chooseBtn = document.getElementById('chooseBgBtn');
-    const takeBtn = document.getElementById('takeBgBtn');
     const removeBtn = document.getElementById('removeBgBtn');
     const fileInput = document.getElementById('bgFileInput');
-    const cameraInput = document.getElementById('bgCameraInput');
 
     function applyBackground(dataUrl){
       if (dataUrl) {
@@ -1362,9 +1359,7 @@ const NOTES = [
     }
 
     chooseBtn.addEventListener('click', () => fileInput.click());
-    takeBtn.addEventListener('click', () => cameraInput.click());
-
-    [fileInput, cameraInput].forEach((input) => {
+    [fileInput].forEach((input) => {
       input.addEventListener('change', () => {
         const file = input.files && input.files[0];
         if (file) resizeAndStore(file);
